@@ -1,8 +1,10 @@
+use crate::bus;
+
 pub struct Cpu {
     regs: [u64; 32],
     // Program Counter
     pub pc: usize,
-    pub memory: Vec<u8>,
+    pub bus: bus::Bus,
 }
 
 impl Cpu {
@@ -10,16 +12,15 @@ impl Cpu {
         Cpu {
             regs: [0; 32],
             pc: 0,
-            memory: bin,
+            bus: bus::Bus::new(bin),
         }
     }
 
     pub fn fetch(&self) -> u32 {
-        let index = self.pc;
-        return self.memory[index] as u32
-            | (self.memory[index + 1] as u32) << 8
-            | (self.memory[index + 2] as u32) << 16
-            | (self.memory[index + 3] as u32) << 24;
+        match self.bus.load(self.pc as u64, 32) {
+            Ok(inst) => inst as u32,
+            Err(_e) => unimplemented!(),
+        }
     }
 
     pub fn execute(&mut self, inst: u32) {
