@@ -12,6 +12,14 @@ impl Bus {
         }
     }
 
+    pub fn store(&mut self, addr: u64, size: u64, value: u64) -> Result<(), ()> {
+        if DRAM_BASE <= addr && addr < DRAM_BASE + DRAM_SIZE {
+            self.dram.store(addr, size, value)
+        } else {
+            Err(())
+        }
+    }
+
     pub fn load(&self, addr: u64, size: u64) -> Result<u64, ()> {
         if DRAM_BASE <= addr && addr < DRAM_BASE + DRAM_SIZE {
             self.dram.load(addr, size)
