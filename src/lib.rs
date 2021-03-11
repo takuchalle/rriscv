@@ -14,8 +14,7 @@ impl Emulator {
     }
 
     pub fn run(&mut self) {
-        loop {
-            let inst = self.cpu.fetch();
+        while let Ok(inst) = self.cpu.fetch() {
 
             self.cpu.pc += 4;
 
@@ -23,4 +22,3 @@ impl Emulator {
         }
     }
 }
-

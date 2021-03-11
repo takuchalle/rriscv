@@ -1,9 +1,11 @@
 use crate::bus;
 
 pub struct Cpu {
+    /// Register
     regs: [u64; 32],
-    // Program Counter
-    pub pc: usize,
+    /// Program Counter
+    pub pc: u64,
+    /// System Bus
     pub bus: bus::Bus,
 }
 
@@ -16,10 +18,10 @@ impl Cpu {
         }
     }
 
-    pub fn fetch(&self) -> u32 {
-        match self.bus.load(self.pc as u64, 32) {
-            Ok(inst) => inst as u32,
-            Err(_e) => unimplemented!(),
+    pub fn fetch(&self) -> Result<u32, ()>  {
+        match self.bus.load(self.pc, 32) {
+            Ok(inst) => Ok(inst as u32),
+            Err(_e) => Err(()),
         }
     }
 
