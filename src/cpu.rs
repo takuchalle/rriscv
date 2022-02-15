@@ -18,7 +18,7 @@ impl Cpu {
         }
     }
 
-    pub fn fetch(&self) -> Result<u32, ()>  {
+    pub fn fetch(&self) -> Result<u32, ()> {
         match self.bus.load(self.pc, 32) {
             Ok(inst) => Ok(inst as u32),
             Err(_e) => Err(()),
